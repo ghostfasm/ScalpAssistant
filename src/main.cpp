@@ -1,10 +1,11 @@
 #include "Application.hpp"
-#define app Application::getApplication()
 
 int main(int argc, char* argv[]) {
 
-    // app.run();
-    // S s();
+    Application* myapp = Application::getApplication();
+    myapp->run("login", "password");
+    // myapp->close();
+    myapp->getConnector().getUser().print();
 
     return 0;
 }

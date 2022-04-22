@@ -4,20 +4,26 @@
 
 class Application {
     static Application* app;
-    Application() {}
+    TransaqConnector connector;
 
-    
+    Application() {}
 public:
-    static Application& getApplication() {
-        if (app) return *app;
+    static Application* getApplication() {
+        if (app) return app;
         app = new Application();
-        return *app;
+        return app;
+    }
+
+    TransaqConnector& getConnector() {
+        return connector;
     }
     static void destroy() {
         delete app;
     }
 
-    void run();
+    void run(const std::string& login, const std::string& password) {
+        connector.getUser().initialize(login, password);
+    }
     void close();
 };
 
