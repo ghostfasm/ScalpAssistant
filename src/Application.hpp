@@ -9,21 +9,13 @@ class Application {
 
     HMODULE hm = 0;
     Application() {
-        // Application Core
-        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam");
 
-        if (hm) {
-
-
-            // TransaqConnector
-            
-        }
     }
 public:
-    static Application* getApplication() {
-        if (app) return app;
+    static Application& getApplication() {
+        if (app) return *app;
         app = new Application();
-        return app;
+        return *app;
     }
 
     TransaqConnector& getConnector() {
@@ -34,6 +26,15 @@ public:
     }
 
     void run(const std::string& login, const std::string& password) {
+        // Application Core
+        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam\\txmlconnector64.dll");
+
+        if (hm) {
+
+
+            // TransaqConnector
+
+        }
         connector.getUser().initialize(login, password);
     }
     void close() {

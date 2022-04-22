@@ -57,6 +57,7 @@ public:
         return user;
     }
 
+
     ~TransaqConnector();
 };
 

@@ -12,10 +12,19 @@ link_directories(
     "${PROJECT_SOURCE_DIR}/"
 )
 
+add_library(TransaqFunctions INTERFACE)
+target_include_directories(TransaqFunctions INTERFACE "${SOURCE_FILES}/lib/finam")
+
 add_library(
     System
     System.hpp
     System.cpp 
+)
+
+add_library(
+    Exchange
+    Exchange.hpp
+    Exchange.cpp
 )
 
 add_library(
@@ -24,9 +33,8 @@ add_library(
     TransaqConnector.cpp 
 )
 
-add_library(TransaqFunctions INTERFACE)
-target_include_directories(TransaqFunctions INTERFACE "${SOURCE_FILES}/lib/finam")
-target_sources(TransaqFunctions INTERFACE Functions.hpp)
+
+# target_sources(TransaqFunctions INTERFACE Functions.hpp)
 
 add_library(
     Application
@@ -40,6 +48,6 @@ set(SOURCE_FILES main.cpp)
 
 add_executable(app ${SOURCE_FILES})
 
-target_link_libraries(app txmlconnector64.dll TransaqConnector Application) 
+target_link_libraries(app txmlconnector64.dll Exchange TransaqConnector Application) 
 
 

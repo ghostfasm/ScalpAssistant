@@ -2,10 +2,10 @@
 
 int main(int argc, char* argv[]) {
 
-    Application* myapp = Application::getApplication();
-    myapp->run("login", "password");
+    Application& myapp = Application::getApplication();
+    myapp.run("login", "password");
     // myapp->close();
-    myapp->getConnector().getUser().print();
+    myapp.getConnector().getUser().print();
 
     return 0;
 }
