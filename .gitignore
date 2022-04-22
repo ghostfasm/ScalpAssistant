@@ -14,7 +14,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+# *.dll
 
 # Fortran module files
 *.mod
@@ -34,4 +34,4 @@
 # Other
 *.exe
 src/build
-
+/.vscode
