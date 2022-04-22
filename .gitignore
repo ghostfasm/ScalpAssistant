@@ -34,8 +34,4 @@
 # Other
 *.exe
 src/build
-/CmakeFiles
-CmakeCache.txt
-*.cmake
-*.tcl
-Makefile
+
