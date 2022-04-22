@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(ScalpAssistant VERSION 0.1.0)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # include(CTest)
 # enable_testing()
@@ -8,8 +8,14 @@ set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
 link_directories(
-    "${PROJECT_SOURCE_DIR}/lib"
+    "${PROJECT_SOURCE_DIR}/lib/finam"
     "${PROJECT_SOURCE_DIR}/"
+)
+
+add_library(
+    System
+    System.hpp
+    System.cpp 
 )
 
 add_library(
@@ -17,6 +23,10 @@ add_library(
     TransaqConnector.hpp
     TransaqConnector.cpp 
 )
+
+add_library(TransaqFunctions INTERFACE)
+target_include_directories(TransaqFunctions INTERFACE "${SOURCE_FILES}/lib/finam")
+target_sources(TransaqFunctions INTERFACE Functions.hpp)
 
 add_library(
     Application

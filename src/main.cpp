@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 // #include <iostream>
 // #include <fstream>
 
-// #define TACCESS_API  __declspec(dllimport)
+//
 
 // typedef bool (WINAPI *tcallback)(BYTE* pData);
 // typedef BYTE* (WINAPI *typeSendCommand)(BYTE* pData);
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 //     xmlfile<<"<?xml version='1.0' encoding='UTF-8'?>";
 //     xmlfile<<"<root>";
 
-//     HMODULE hm = LoadLibrary("D:\\repo\\ScalpAssistant\\src\\lib\\txmlconnector64.dll");
+//     HMODULE hm = LoadLibrary("D:\\repo\\ScalpAssistant\\src\\lib\\finam\\txmlconnector64.dll");
 //     if (hm) {
 //         typeSetCallback SetCallback =
 //             reinterpret_cast<typeSetCallback>(GetProcAddress(hm, "SetCallback"));

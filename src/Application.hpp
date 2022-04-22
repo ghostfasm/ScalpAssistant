@@ -1,12 +1,24 @@
 #ifndef _APPLICATION_HPP
 #define _APPLICATION_HPP
+#include "System.hpp"
 #include "TransaqConnector.hpp"
 
 class Application {
     static Application* app;
     TransaqConnector connector;
 
-    Application() {}
+    HMODULE hm = 0;
+    Application() {
+        // Application Core
+        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam");
+
+        if (hm) {
+
+
+            // TransaqConnector
+            
+        }
+    }
 public:
     static Application* getApplication() {
         if (app) return app;
@@ -24,7 +36,9 @@ public:
     void run(const std::string& login, const std::string& password) {
         connector.getUser().initialize(login, password);
     }
-    void close();
+    void close() {
+
+    }
 };
 
 Application* Application::app = nullptr;

@@ -2,6 +2,9 @@
 #define _TRANSAQ_CONNECTOR
 #include <string>
 #include <iostream>
+#include "lib/finam/Functions.hpp"
+
+#define TACCESS_API  __declspec(dllimport)
 
 class User {
     std::string login;
