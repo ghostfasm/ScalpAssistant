@@ -3,7 +3,11 @@
 
 namespace Exchange {
     struct Ticker {
+        const char* name;
 
+        Ticker(const char* name) : name(name) {
+            
+        }
     };
 
     class Exchange {

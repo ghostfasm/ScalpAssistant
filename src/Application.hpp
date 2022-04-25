@@ -5,9 +5,8 @@
 
 class Application {
     static Application* app;
-    TransaqConnector connector;
+    TransaqConnector* connector;
 
-    HMODULE hm = 0;
     Application() {
 
     }
@@ -18,7 +17,7 @@ public:
         return *app;
     }
 
-    TransaqConnector& getConnector() {
+    TransaqConnector* getConnector() {
         return connector;
     }
     static void destroy() {
@@ -26,16 +25,9 @@ public:
     }
 
     void run(const std::string& login, const std::string& password) {
-        // Application Core
-        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam\\txmlconnector64.dll");
+        connector = new TransaqConnector(login, password);
+        if (!connector->connect()) System::terminate();
 
-        if (hm) {
-
-
-            // TransaqConnector
-
-        }
-        connector.getUser().initialize(login, password);
     }
     void close() {
 

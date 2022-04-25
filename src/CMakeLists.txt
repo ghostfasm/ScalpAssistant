@@ -21,7 +21,7 @@ add_library(
     System.cpp 
 )
 
-add_library(
+add_library( 
     Exchange
     Exchange.hpp
     Exchange.cpp
