@@ -8,6 +8,18 @@
 
 #define TACCESS_API  __declspec(dllimport)
 
+
+
+bool CALLBACK acceptor(BYTE *pData)
+{
+    // xmlfile<<pData<<std::endl;
+    std::cout << pData << std::endl;
+
+    TRCAPI::FreeMemory(pData);
+    return true;
+}
+
+
 class User {
     std::string login;
     std::string password;
@@ -52,11 +64,27 @@ public:
 
 class TransaqConnector {
     User user;
-
     HMODULE hm = 0;
-    typeFreeMemory FreeMemory;
-    initialize initLog;
 
+    void initDllsLibs() {
+        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam\\txmlconnector64.dll");
+
+        if (hm) {
+            TRCAPI::initLog = reinterpret_cast<TRCAPI::initialize>(GetProcAddress(hm,"Initialize"));
+            TRCAPI::initLog(reinterpret_cast<const BYTE*>("D:\\test"), 2);
+
+            TRCAPI::FreeMemory = reinterpret_cast<TRCAPI::typeFreeMemory>(GetProcAddress(hm, "FreeMemory"));
+            TRCAPI::SetCallback = reinterpret_cast<TRCAPI::typeSetCallback>(GetProcAddress(hm, "SetCallback"));
+            TRCAPI::SetCallback(acceptor);
+
+            TRCAPI::SendCommand =
+                reinterpret_cast<TRCAPI::typeSendCommand>(GetProcAddress(hm,"SendCommand"));
+            if (!TRCAPI::SendCommand) {
+                System::print("\"SendCommand\" not found (0x" + std::to_string(GetLastError()) + ")\n", System::MessageType::Error);
+                System::terminate();
+            }
+        }
+    }
 public:
     enum class CommandType {
         CONNECT = 0
@@ -65,21 +93,15 @@ public:
     TransaqConnector() {
 
     }
+
     TransaqConnector(const std::string& login, const std::string& password) {
         user.setLogin(login);
         user.setPassword(password);
-
-
-        System::loadLibrary(hm, "D:\\repo\\ScalpAssistant\\src\\lib\\finam\\txmlconnector64.dll");
-
-        if (hm) {
-            FreeMemory = reinterpret_cast<typeFreeMemory>(GetProcAddress(hm, "FreeMemory"));
-            initLog = reinterpret_cast<initialize>(GetProcAddress(hm,"Initialize"));
-            initLog(const_cast<BYTE*> (reinterpret_cast<const BYTE*>("D:\\test")), 2);
-        }
     }
 
     bool connect() {
+        initDllsLibs();
+
         if (user.getLogin().size() == 0 || user.getPassword().size() == 0) {
             System::print("Check login and password.", System::MessageType::Error);
             return false;
@@ -99,38 +121,24 @@ public:
     }
 
     bool sendCommand() {
-        typeSendCommand SendCommand =
-            reinterpret_cast<typeSendCommand>(GetProcAddress(hm,"SendCommand"));
-        if (!SendCommand) {
-            System::print("\"SendCommand\" not found (0x" + std::to_string(GetLastError()) + ")\n", System::MessageType::Error);
-            return false;
-        } else {
-            // BYTE* ss = SendCommand(cmd);
 
-            BYTE* ss = SendCommand(const_cast<BYTE*> (reinterpret_cast<const BYTE*>(
-                "<command id='connect'>"
-                "<login>KOKS</login><password>koks</password>"
-                "<host>192.168.15.14</host><port>3901</port>"
-                "<logsdir>.\\LOGS\\</logsdir><loglevel>0</loglevel></command>")));
+        BYTE* ss = TRCAPI::SendCommand(const_cast<BYTE*> (reinterpret_cast<const BYTE*>(
+            "<command id='connect'>"
+            "<login>KOKS</login><password>koks</password>"
+            "<host>192.168.15.15</host><port>3901</port>"
+            "<logsdir>.\\LOGS\\</logsdir><loglevel>0</loglevel></command>")));
 
-            std::ofstream out("log.txt");
-            std::cout << reinterpret_cast<const char*>(ss) << std::endl;
-            out << reinterpret_cast<const char*>(ss);
-            out.close();
-        
-            FreeMemory(ss);
-        }
+        std::ofstream out("log.txt");
+        out << "123\n";
+        out << reinterpret_cast<const char*>(ss);
+        out.close();
+    
+        TRCAPI::FreeMemory(ss);
 
         return true;
     }
 
-    bool CALLBACK acceptor(BYTE *pData)
-    {
-        // xmlfile<<pData<<std::endl;
-        FreeMemory(pData);
-        return true;
-    }
-
+  
     ~TransaqConnector();
 };
 

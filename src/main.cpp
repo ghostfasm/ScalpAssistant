@@ -1,5 +1,14 @@
 #include "Application.hpp"
 
+// bool CALLBACK acceptor2(BYTE *pData)
+// {
+//     // xmlfile<<pData<<std::endl;
+
+//     // FreeMemory(pData);
+//     return true;
+// }
+
+
 int main(int argc, char* argv[]) {
 
     Application& myapp = Application::getApplication();
